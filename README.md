@@ -40,6 +40,10 @@ on top of the actual non-penalty xG, so you can see how much each team's total d
 - **Pressing height** had no link (−0.02).
 - Style explained about a third of the differences in chances (R² = 0.36). The rest came from player
   quality, set pieces and luck.
+- **Chances are not results.** Possession went with more chances (correlation 0.31) but not with more
+  points (−0.08). This matches what commentators noticed at the time: Spain kept the ball more than
+  anyone yet created less than their style predicted (0.86 vs 1.17 non-penalty xG per 90), and
+  low-possession Morocco reached the semi-finals.
 
 ## Stages 2 and 3: predicted vs actual, and the role of penalties
 
@@ -63,15 +67,33 @@ on top of the actual non-penalty xG, so you can see how much each team's total d
 ![Stage 3 style](figures/fig3_style_shift.png)
 
 - **Argentina** gave up their usual control and played far more direct and wide than they normally did.
-- **France** lost both control and their usual ball-carrying. They pressed higher than usual, but Stage 1
-  showed that pressing height did not create chances.
+  This was the plan: Scaloni started Di María on the left to attack Koundé. Di María won the first
+  penalty, scored the second goal, and made 6 of Argentina's 12 crosses in the first 90 minutes.
+- **France** lost both control and their usual ball-carrying, and had **no shot at all in the first
+  half**. They pressed higher than usual, but Stage 1 showed that pressing height did not create
+  chances.
 
 ![Stage 3 timeline](figures/fig4_xg_timeline.png)
 
-- Argentina created chances steadily through the first 80 minutes, while France had almost none.
-- France's comeback came in a short burst: a penalty and Mbappé's volley 97 seconds apart.
+- Argentina created most of their chances while Di María was on: 0.72 non-penalty xG before he went
+  off at 64', and 0.11 in the 26 minutes after.
+- France's comeback came in a short burst after Deschamps' substitutions: Kolo Muani (on at 41') won the
+  penalty, and Thuram (also on at 41') set up Mbappé's volley 97 seconds later.
 - In **extra time**, Argentina created 1.14 open-play xG from 8 shots; France's main chance was a
   penalty.
+
+## How this compares with other analysis
+
+The findings agree with what was written about the tournament and the final at the time:
+
+| Common view | What this analysis found |
+|---|---|
+| Possession mattered less for winning in 2022 ([ESPN](https://www.espn.co.uk/football/fifa-world-cup/story/4832549/2022-world-cup-tactical-trends-do-you-even-need-possession)) | Possession went with chances, not with points; Spain created less than their style predicted |
+| More attacking play went down the wings ([ESPN](https://www.espn.co.uk/football/fifa-world-cup/story/4832549/2022-world-cup-tactical-trends-do-you-even-need-possession)) | Direct and wide play was the second-strongest driver of chances |
+| Argentina won a record five penalties at one World Cup ([FourFourTwo](https://fourfourtwo.com/news/how-many-penalties-have-argentina-and-lionel-messi-had-at-world-cup-2022)) | Four before the final and one in it; penalties were what lifted Argentina's xG above their style |
+| Argentina targeted Koundé with Di María on the left ([Coaches' Voice](https://learning.coachesvoice.com/cv/world-cup-final-2022-tactics-argentina-messi-france-mbappe/), [Breaking The Lines](https://breakingthelines.com/world-cup-2022/tactical-analysis-argentina-3-3-france/)) | Argentina turned direct and wide in the final; their chances dropped once Di María went off |
+| France had no shot in the first half, and the 41' changes turned the game ([NBC](https://www.nbcconnecticut.com/news/sports/soccer/world-cup-2022/olivier-giroud-ousmane-dembele-substituted-before-halftime-vs-argentina-in-world-cup-final/2938765/)) | Confirmed: 0 shots before half-time; both late France goals came through the two substitutes |
+| Argentina dominated open-play chances; at 90' France had 0.29 non-penalty xG ([Sporting Life](https://www.sportinglife.com/football/news/xg-world-cup-final-review-according-to-expected-goals/206066), Infogol model) | 0.84 vs 0.37 non-penalty xG at 90' and 1.14 vs 0.33 in extra time (StatsBomb model; models differ slightly) |
 
 ## Limitations
 
