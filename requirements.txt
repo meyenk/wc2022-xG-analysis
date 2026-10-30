@@ -1,0 +1,9 @@
+statsbombpy==1.22.0
+pandas==3.0.5
+numpy==2.5.3
+scikit-learn==1.9.1
+statsmodels==0.15.0
+matplotlib==3.11.2
+jupyter==1.1.1
+nbconvert==7.17.2
+pillow==12.3.0
