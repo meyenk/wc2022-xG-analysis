@@ -1,7 +1,7 @@
 """Stage 1: PCA on the 12 style metrics, then a regression of non-penalty xG per 90 on the components.
 
-Penalties are not a style trait, so the model explains non-penalty xG. Penalties are added back
-as their own block when we break a team's total xG down (see `breakdown`).
+Penalties are not a style trait (a penalty is worth ~0.78 xG however a team plays), so the model
+explains non-penalty xG only. Penalties are reported next to it, never mixed in.
 """
 from dataclasses import dataclass
 
@@ -50,28 +50,21 @@ class Baseline:
         out = pd.DataFrame({"effect": self.ols.params[PCS], "lo": ci[0], "hi": ci[1]}).mul(self.score_sd, axis=0)
         return out.assign(p=self.ols.pvalues[PCS])
 
-    @property
-    def average_xg(self):
-        return self.ols.params["const"] + self.mean_pen_p90
-
     def components(self, df):
         return pd.DataFrame(self.pca.transform(self.scaler.transform(df[list(METRICS)])), columns=PCS, index=df.index)
 
-    def breakdown(self, df):
-        """Split each row's xG/90 into: average team + style components + other + penalties = actual.
+    def summary(self, df, totals=False):
+        """Per row: non-penalty xG predicted from style, actual non-penalty xG, and penalty xG.
 
-        `other` is non-penalty xG the style does not explain (individual quality, set pieces, noise).
+        Per 90 minutes by default; `totals=True` converts to totals over the minutes played.
         """
         s = self.components(df)
-        out = pd.DataFrame(index=df.index)
-        out["average_team"] = self.average_xg
-        for pc in PCS:
-            out[NAMES[pc]] = self.ols.params[pc] * s[pc]
-        out["predicted_npxg"] = self.ols.params["const"] + out[[NAMES[p] for p in PCS]].sum(axis=1)
-        out["other"] = df["npxg_p90"] - out["predicted_npxg"]
-        out["penalties"] = (df["xg_p90"] - df["npxg_p90"]) - self.mean_pen_p90
-        out["actual_xg"] = df["xg_p90"]
-        return out
+        out = pd.DataFrame({
+            "predicted": self.ols.params["const"] + (s * self.ols.params[PCS]).sum(axis=1),
+            "non_penalty": df["npxg_p90"],
+            "penalties": df["xg_p90"] - df["npxg_p90"],
+        }, index=df.index)
+        return out.mul(df["minutes"] / 90, axis=0) if totals else out
 
 
 def fit(base):
