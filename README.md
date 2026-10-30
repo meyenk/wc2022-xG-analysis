@@ -1,151 +1,145 @@
 # What drives chance creation at the 2022 World Cup, and how Argentina and France fit the pattern
 
-**The question.** Across all 64 matches of the 2022 World Cup, which playing-style traits go with creating
-more expected goals (xG)? Where did the two finalists sit on those traits, and how did each team's
-usual pattern hold up in the final?
+**Question:** which playing-style traits go with creating more chances at the 2022 World Cup? Where did
+the two finalists sit on those traits, and what changed in the final (Argentina 3–3 France after extra
+time; Argentina won on penalties)?
 
-**Why 2022 and not 2026.** The original idea was Argentina's comebacks at the 2026 World Cup. Event-level
-data for 2026 is not publicly available: StatsBomb's open data stops before 2026, and FIFA's post-match
-reports only give aggregates. The 2022 final (Argentina 3–3 France, Argentina won on penalties) asks the
-same kind of question and has full open event data for every match.
+**In one paragraph:** across the tournament, teams that **controlled the ball**, **went direct and wide**,
+or **carried the ball forward** created more chances; how high a team pressed made no difference.
+Argentina's edge before the final was control **plus penalties**: they won four in six games, and
+without them their chances were exactly what their style predicts. France's edge was ball-carrying, the
+best of all 32 teams. In the final, Argentina dropped their usual control and played direct and wide.
+France were pushed off both control and carrying. Over 120 minutes Argentina created **1.97 open-play
+xG to France's 0.71**; two of France's three goals were penalties.
+
+![How the analysis works](figures/fig0_pipeline.png)
+
+> **xG (expected goals)** = the probability a shot is scored, from the shot's location and type. Summed
+> over a match, it measures how many good chances a team created. A penalty is worth about 0.78 xG.
 
 ---
 
-## Key findings
+## Stage 1: what drives chances across the tournament?
 
-### 1. Across the tournament, control, directness and ball-carrying go with chances; pressing height does not
+**What we did.** For every team in every match before the final (126 team-matches, extra time included),
+we computed 12 style metrics: how much of the ball it had, how it moved the ball forward, where it
+played, and how it pressed. Many of these move together; for example, teams with more possession also
+make more progressive passes. **PCA** (principal component analysis) groups metrics that move together
+into a few independent **style components**. Five components capture 85% of how teams differ. We then
+asked how much each component moves a team's **non-penalty xG** per 90 minutes. Penalties are not a
+style trait, so they are added back separately in Stage 2.
 
-![What drives xG](figures/fig1_what_drives_xg.png)
+![Stage 1](figures/fig1_stage1_drivers.png)
 
-Twelve style metrics reduce to five components that explain 85% of how teams differ. Regressing xG per 90
-on those components explains **35% of match-to-match variation in xG** (R² = 0.35, 126 team-matches). For
-a one-standard-deviation increase:
+**Result.**
+- **Control** has the biggest link to chances: +0.26 xG per 90 for a team one standard deviation more in
+  control. Control here means possession, field tilt, progressive passes and few long balls.
+- **Direct & wide** play follows (+0.21), then **ball-carrying** (+0.17) and **pressing volume** (+0.13).
+- **Pressing height** has no link at all (−0.02).
+- An average team made 1.05 xG per 90 (0.11 of it from penalties). Style explains 36% of the differences
+  in xG; the rest is player quality, set pieces and luck.
 
-| Component | What it is | xG/90 change (95% CI) |
+## Stage 2: Argentina and France compared with everyone
+
+**What we did.** We scored every team on the same five components, averaged over its matches before the
+final. We then split each team's xG into a sum of parts: what an average team makes, plus what each style
+component adds or takes away, plus penalties, plus whatever style does not explain.
+
+![Stage 2](figures/fig2_stage2_breakdown.png)
+
+| Rank among 32 teams | Argentina | France |
 |---|---|---|
-| **Control** | possession, field tilt, progressive passing, few long balls | **+0.29** (0.17 to 0.40) |
-| **Direct & wide** | crosses, regains high up, vertical passing | **+0.22** (0.11 to 0.33) |
-| **Ball-carrying** | progressive carries | **+0.19** (0.09 to 0.29) |
-| Pressing volume | pressures per opponent possession | +0.12 (−0.00 to 0.24) |
-| Pressing height | where the pressures happen | −0.01 (−0.12 to 0.10) |
-
-An average team made 1.04 xG per 90. *Reading for staff:* how high a team pressed told us nothing about
-how many chances it created; what it did with the ball did.
-
-### 2. Argentina out-created their style, and the whole surplus is penalties
-
-![Actual vs predicted](figures/fig2_actual_vs_predicted.png)
-
-Before the final, Argentina made **1.56 xG per 90 (3rd of 32)**, while their style predicts 1.23
-(6th). That gap of +0.33 is almost exactly their penalties: they won **4 penalties in 6 matches**
-(Saudi Arabia, Poland, Netherlands, Croatia), worth 0.45 xG per 90. Refit the same model on
-non-penalty xG and Argentina sit on the line (residual +0.01). France, with no penalties, beat their
-non-penalty prediction by +0.22 (5th): their chances were better than their style alone suggests.
-
-### 3. Argentina's chances came from control and carrying; France's mostly from carrying
-
-![Team contributions](figures/fig3_team_contributions.png)
-
-Ranks among the 32 teams, matches before the final:
-
-| Component | Argentina | France |
-|---|---|---|
-| Control | 8th | 12th |
-| Direct & wide | **31st** (almost never direct) | 19th |
+| xG per 90 | **3rd** (1.57) | 5th (1.41) |
+| xG predicted from style | 6th | 4th |
+| Control | 6th | 12th |
+| Direct & wide | **31st** | 21st |
 | Pressing volume | 5th | 13th |
 | Ball-carrying | 3rd | **1st** |
 
-Argentina's xG came from control (+0.18 per 90) and carrying (+0.12), held back by how rarely they played
-direct or wide (−0.17). France's came mostly from carrying (+0.22), more than any other team's.
+**Result.**
+- **Argentina** were a control team (+0.18) that almost never went direct or wide (31st of 32, −0.16).
+  The biggest single part of their total was **penalties: four won in six games, +0.32 xG per 90** above
+  an average team. Take the penalties out and their chances match their style almost exactly
+  (+0.03 unexplained).
+- **France** got their edge from **ball-carrying** (+0.19, the most of any team). They also created
+  +0.21 more than their style predicts, which points to individual quality in the final third. They won
+  no penalties before the final.
 
-**In the final (first 90 minutes) Argentina changed shape.** Their "Direct & wide" score went from the
-second-lowest in the tournament to +1.14, and crosses per final-third entry were 1.6 standard deviations
-above their own norm. Di María made 6 of their 12 crosses, and 44% of their final-third entries went down
-the left (33% in earlier games). France were pushed off both of their usual strengths: passes per
-possession and progressive passes were both 1.3 SD below their own average, and carrying fell.
-*Caveat: Argentina led for 57 of the 90 minutes, so some of this is game state, not plan.*
+> **Predicted vs actual:** the predicted value is what a team with that style usually creates at this
+> tournament. The gap is not "playing differently". It is getting more (or less) out of the same way of
+> playing: penalties, individual quality, set pieces, or luck.
 
-### 4. France's comeback came with a higher press and more carries; extra time was Argentina's
+## Stage 3: the final, all 120 minutes
 
-![Final by game state](figures/fig4_final_by_game_state.png)
+**What we did.** We scored the final on the same components and compared each team with its own usual
+style. We then followed the chances through the match on a cumulative xG timeline. Extra time is part of
+the analysis, not an afterthought. It is shaded on the timeline and is its own window in the score-state
+table below.
 
-Extra time is treated separately, not as more of the same match. Split by score state:
+![Stage 3a](figures/fig3_stage3_style_shift.png)
 
-- **22–79', Argentina leading:** Argentina 1.35 xG (0.78 of it Messi's penalty), France 0.15. France pressed
-  higher than Argentina (58 vs 55 on the pitch's x-axis) but created almost nothing.
-- **79–90', France's comeback:** in about 19 minutes France pressed at 64.6 (their highest of the match)
-  while Argentina's pressing dropped to 38, deep in their own half. France made 1.01 xG in that window: a
-  penalty (0.78) plus Mbappé's volley. Argentina made 0.07.
-- **91–120', extra time:** Argentina took control back: 63% of passes, 1.14 open-play xG from 8 shots,
-  against France's 0.33 from 3 (plus Mbappé's 117' penalty).
+**Result: both teams moved away from their usual style.**
+- **Argentina** went from their usual high control (+1.72) to average (0.02), and from the second-least
+  direct team (−0.97) to strongly **direct and wide** (+1.15). Their style still predicted 1.22
+  open-play xG per 90, and they made 1.26: the style change kept producing chances.
+- **France** lost **control** (+0.61 → −0.98) and most of their usual **ball-carrying** (+0.97 → +0.17).
+  They pressed higher than usual, but Stage 1 shows that does not create chances. Their style predicted
+  only 0.71 open-play xG per 90, and they made 0.45.
 
-**Reading:** the 70' French changes and the 79–81' goals are confounded, since France were also chasing
-the game. The data shows *what* changed (a higher press and more carrying), not which cause drove it.
+![Stage 3b](figures/fig4_stage3_xg_race.png)
+
+| Phase of the final | Argentina xG | France xG | What changed |
+|---|---|---|---|
+| 0–22' (0–0) | 0.19 | 0.00 | Argentina 59% of passes |
+| 22–79' (Argentina lead) | 1.35, incl. 0.78 pen | 0.15 | France press higher (58 vs 55 on the x-axis) but create nothing |
+| 79–90' (France comeback) | 0.07 | 1.01, incl. 0.78 pen | France press at 64.6, Argentina drop to 38.2; France triple their carries |
+| 91–120' (extra time) | 1.14, open play (8 shots) | 1.11, incl. 0.78 pen (3 other shots) | Argentina back on top: 63% of passes |
+
+**Result.**
+- Argentina created the open-play chances in three of the four phases: 1.97 open-play xG to France's
+  0.71 over the match.
+- France's comeback was a short, intense spell: about 19 minutes of high pressing and carrying, which
+  produced a penalty and Mbappé's volley 97 seconds apart.
+- In **extra time** Argentina took control back and created 1.14 open-play xG from 8 shots. France's
+  answer was a penalty.
 
 ---
 
-## How to read "predicted vs actual"
+## Method in brief
 
-The model is fitted once, on every team-match before the final. For any team or match, **predicted xG** is
-what a team playing with that style usually creates at this tournament. **Actual minus predicted** (the
-residual) is xG that style does not explain: penalties, individual quality (a shot from a better spot than
-the style implies), set pieces, or noise. A positive residual is not "playing differently". It is
-*getting more out of the same way of playing*. For Argentina that "more" was penalties. This also differs
-from finishing: goals vs xG is a separate gap that this analysis does not model.
-
-## Method
-
-- **Data:** StatsBomb open data, FIFA World Cup 2022: 64 matches, 234,637 events. The competition and
-  match IDs are looked up through `statsbombpy`, not hard-coded.
-- **Unit:** one row per team per match, **regulation time only** (periods 1–2). The final is held out of
-  the baseline (126 rows). Extra time is analysed separately and shootouts are excluded.
-- **Target:** xG per 90 **including penalties**. A penalty-free version (npxG) is fitted as a check, and the
-  coefficients barely move (R² 0.36 vs 0.35).
-- **12 style metrics** (none use shots or xG, so the target cannot leak into the predictors):
-
-| Pillar | Metric | Definition |
-|---|---|---|
-| Build-up | Possession share | Team share of all passes in the match |
-| | Passes per possession | Open-play passes / team possessions |
-| | Pass completion under pressure | Completion of open-play passes made under pressure |
-| Progression | Progressive passes /90 | Completed open-play passes that cut the distance to goal by 25%+, starting outside own third |
-| | Progressive carries /90 | Carries of 5+ units, same rule |
-| | Directness | Mean forward gain (x) per open-play pass |
-| | Long-ball share | Share of open-play passes of 35+ units |
-| Territory | Field tilt | Team share of both teams' final-third passes |
-| | Crosses per entry | Open-play crosses / final-third entries |
-| Pressing | Pressures per opp. possession | Pressures / opponent possessions |
-| | Pressure height | Mean x of pressures |
-| | High regains /90 | Recoveries and won interceptions in the opponent half |
-
-- **Model:** standardise the metrics, run a PCA, and keep the 5 components that explain 85% of the
-  variance. Then fit an OLS of xG/90 on the components. Each match appears twice (once per team), so the
-  standard errors are clustered by match.
-- **Team breakdown:** a team's contribution from a component = coefficient × the team's average score on
-  that component. The contributions plus the residual add up to the gap from the average team.
-- **Checks:** regulation-time goals in the metric table match the shot data for every match. Argentina's
-  match-by-match goals and penalties were checked by hand. Every substitution and goal time in the final
-  comes from the events.
+| Step | Detail |
+|---|---|
+| Data | StatsBomb open data, FIFA World Cup 2022: 64 matches, 234,637 events. Match IDs are looked up, not hard-coded. |
+| Unit | One row per team per match, **all periods including extra time**, shootouts excluded. Rates are per 90 minutes actually played. The final is held out of the baseline. |
+| 12 metrics | Build-up: possession share, passes per possession, pass completion under pressure. Progression: progressive passes /90, progressive carries /90, directness, long-ball share. Territory: field tilt, crosses per final-third entry. Pressing: pressures per opponent possession, pressure height, regains in the opponent half /90. **None use shots or xG**, so the outcome cannot leak into the inputs. Exact definitions are in `src/metrics.py`. |
+| Model | Standardise the metrics → PCA, keeping 5 components (85% of variance) → linear regression of non-penalty xG per 90 on the components. Standard errors are clustered by match, because each match appears twice. |
+| Breakdown | Average team + (coefficient × team's component score) for each component + penalties vs average + unexplained = actual xG. |
+| Checks | Goals per team-match agree with the shot data for all 128 rows, and the final reads 3–3. Goal and substitution times come from the events, not memory. |
 
 ## Limitations
 
-- **Small samples.** Seven matches per finalist; one final. Rates in short windows of the final (e.g. 19
-  minutes) rest on a handful of events. The notebook reports counts next to rates.
-- **Association, not cause.** Stronger teams have the ball more because they are stronger. The model says
-  which traits go with chances at this tournament, not that adopting them creates chances.
-- **No opponent adjustment.** Argentina's group (Saudi Arabia, Mexico, Poland) differs from France's.
-- **Game state.** The final's 90-minute profile is dominated by Argentina leading. The window split
-  (finding 4) is the only game-state control; the tournament baseline does not split by score.
-- **Event data only.** Off-ball shape (defensive line height, compactness) needs tracking data. StatsBomb
-  360 frames exist for every match but were left out to keep the scope tight.
-- **Metric definitions are choices.** Thresholds (25% for progressive, 35 units for long) follow common
-  practice but are not unique.
+- **Small samples.** Seven matches per finalist and one final. The phase windows in Stage 3 are short (19
+  minutes for the comeback), so the table reports raw xG and shot counts, not only rates.
+- **Association, not cause.** Better teams have the ball more because they are better. The model says
+  which traits go with chances at this tournament, not that copying them would create chances.
+- **Game state.** Argentina led for 57 of the first 90 minutes of the final, so part of their style
+  change is the scoreline. The phase table is the only score-state control.
+- **No opponent adjustment.** The two finalists faced different opponents on the way to the final.
+- **Event data only.** Off-ball shape (defensive line height, compactness) would need tracking data.
+
+## Why 2022 and not 2026
+
+The original idea was Argentina's comebacks at the 2026 World Cup, but event-level data for 2026 is not
+publicly available: StatsBomb's open data stops before 2026, and FIFA's post-match reports only give
+aggregates. The 2022 final asks the same kind of question and has full open data.
 
 ## Future scope
 
-Micro-analysis of the final's breakpoints: pass networks before and after France's 41' double
-substitution and Di María's 64' exit; who took over the left side; defensive line height from 360 frames;
-and full tracking data (PFF FC publishes broadcast tracking for all 64 matches on request).
+A closer look at the final's turning points:
+- pass networks before and after France's 41' double substitution and Di María's exit at 64';
+- who took over Argentina's left side;
+- defensive line height from StatsBomb 360 frames;
+- full tracking data (PFF FC provides it for all 64 matches on request).
 
 ## Reproduce
 
@@ -154,9 +148,14 @@ pip install -r requirements.txt
 jupyter nbconvert --to notebook --execute --inplace notebooks/analysis.ipynb
 ```
 
-The first run downloads and caches the events in `data/` (gitignored). `src/` holds the data loading
-(`data.py`), the metrics (`metrics.py`), the model (`model.py`), the final's score-state split
-(`final.py`) and the figures (`plots.py`). `notes/00_data_dictionary.md` lists every field in the data.
+The first run downloads and caches the events in `data/` (gitignored). The code is in `src/`:
+- `data.py`: loading;
+- `metrics.py`: the 12 metrics;
+- `model.py`: PCA, regression and breakdown;
+- `final.py`: the final's phases and timeline;
+- `plots.py`: the figures.
+
+`notes/00_data_dictionary.md` lists every field in the data.
 
 ## Data credit
 

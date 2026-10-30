@@ -112,8 +112,8 @@ def team_match_row(ev, team):
     }
 
 
-def team_match_table(ev, matches, periods=(1, 2)):
-    """One row per team per match, restricted to `periods` (default: regulation time)."""
+def team_match_table(ev, matches, periods=(1, 2, 3, 4)):
+    """One row per team per match over `periods` (default: all open play incl. extra time, no shootout)."""
     meta = matches.set_index("match_id")
     rows = []
     for mid, g in ev[ev.period.isin(periods)].groupby("match_id"):
